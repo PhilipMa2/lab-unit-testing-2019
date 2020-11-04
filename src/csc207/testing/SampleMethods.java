@@ -16,7 +16,7 @@ public class SampleMethods {
    * @return The temperature in Fahrenheit.
    */
   public static int c2f(int temp) {
-    return (temp - 32) * (5 / 9);
+    return temp * 9 / 5 + 32;
   } // c2f(int)
 
   /**
@@ -43,7 +43,7 @@ public class SampleMethods {
     } // if (p is even)
     // Recursive case: When p is odd, result is x*(x^(p-1))
     else {
-      return expt(x * x, (p - 1) / 2);
+      return expt(x, p - 1) * x;
     } // if p is odd.
   } // expt(int,int)
 
@@ -70,7 +70,7 @@ public class SampleMethods {
     } // if p is even
     // Recursive case: When p is odd, result is x*(x^(p-1))
     else {
-      return expt(x * x, (p - 1) / 2);
+      return expt(x, p - 1) * x;
     } // if p is odd
   } // expt(double,int)
 
@@ -89,9 +89,14 @@ public class SampleMethods {
     String no_as = ""; // The string we're creating with no a's.
 
     for (int i = 0; i < str.length(); i++) {
-      if (str.charAt(i) == 'a') {
-        no_as += str.charAt(i++);
-      } // if we see the a
+      if (str.charAt(i) == 'a') {   // if we see the a
+        if (i+1 == str.length()) {
+          break;
+        }
+        continue;
+      } else {
+        no_as += str.charAt(i);
+      }
     } // for each position
 
     return no_as;
@@ -110,9 +115,12 @@ public class SampleMethods {
    */
   public static String removeBs(String str) {
     StringBuffer no_bs = new StringBuffer(str);
-    for (int i = 0; i < str.length(); i++) {
+    for (int i = 0; i < no_bs.length();) {
       if (no_bs.charAt(i) == 'b') {
         no_bs.deleteCharAt(i);
+        i = 0;
+      } else {
+        i++;
       } // if the char at position i is a 'b'
     } // for each position in the string
 
@@ -124,14 +132,14 @@ public class SampleMethods {
    * 
    * @param ints an array of integers
    * @return result, an integer
-   * @pre ints[0] + ints[1] + ... + ints[ints.length-1] < maxint
+   * @pre For every subset of ints, Integer.MIN_VALUE <  the sum of the subset < Integer.MAX_VALUE
    * @post result = ints[0] + ints[1] + ... + ints[ints.length-1]
    */
   public static int sum(int[] ints) {
     int result = 0;
 
     for (int i = 0; i < ints.length; i++) {
-      result += result + i;
+      result += ints[i];
     } // for
     
     return result;
